@@ -1,87 +1,95 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Savvylife App</title>
+    <title>Church App</title>
 </head>
 
 <body style="font-family: Arial; text-align:center; background:#0f172a; color:white;">
 
-    <!-- HOME SCREEN -->
-    <div id="home">
-        <h1>Welcome 🚀</h1>
-        <p>This Savvylife Hacks</p>
+    <!-- SETUP SCREEN -->
+    <div id="setup">
+        <h1>Setup Your Church</h1>
 
-        <button onclick="goToAbout()" 
-        style="padding:15px; margin:10px; background:#22c55e; color:white; border:none; border-radius:10px;">
-            Go to About Page
-        </button>
+        <input type="text" id="churchName" placeholder="Enter Church Name"
+        style="padding:10px; margin:5px;"><br><br>
 
-        <button onclick="goToContact()" 
-        style="padding:15px; margin:10px; background:#f59e0b; color:white; border:none; border-radius:10px;">
-            Contact Me
-        </button>
-    </div>
+        <input type="file" id="logoInput"><br><br>
 
-    <!-- ABOUT SCREEN -->
-    <div id="about" style="display:none;">
-        <h1>About Me 😎</h1>
-        <p>This app was built by Timothy!</p>
-
-        <button onclick="goHome()" 
-        style="padding:15px; margin:10px; background:#3b82f6; color:white; border:none; border-radius:10px;">
-            Back Home
+        <button onclick="saveSetup()" 
+        style="padding:15px; background:#22c55e; color:white; border:none; border-radius:10px;">
+            Save & Continue
         </button>
     </div>
 
-    <!-- CONTACT SCREEN -->
+    <!-- MAIN APP -->
+    <div id="app" style="display:none;">
+        <h1 id="displayName"></h1>
+        <img id="displayLogo" width="100"><br><br>
+
+        <button onclick="showContact()">Contact</button>
+        <button onclick="resetApp()">Reset</button>
+    </div>
+
+    <!-- CONTACT -->
     <div id="contact" style="display:none;">
-        <h1>Contact Me 📞</h1>
-        <p>Send me a message:</p>
+        <h2>Contact</h2>
 
-        <!-- FORMSPREE FORM -->
         <form action="https://formspree.io/f/xdawbqbj" method="POST">
-            
-            <input type="text" name="name" placeholder="Your Name" required
-            style="padding:10px; margin:5px; width:80%; border-radius:5px;"><br>
-
-            <input type="email" name="email" placeholder="Your Email" required
-            style="padding:10px; margin:5px; width:80%; border-radius:5px;"><br>
-
-            <textarea name="message" placeholder="Your Message" required
-            style="padding:10px; margin:5px; width:80%; height:100px; border-radius:5px;"></textarea><br>
-
-            <button type="submit" 
-            style="padding:15px; background:#f59e0b; color:white; border:none; border-radius:10px; margin-top:5px;">
-                Send Message
-            </button>
-
+            <input type="text" name="name" placeholder="Your Name"><br><br>
+            <input type="email" name="email" placeholder="Your Email"><br><br>
+            <textarea name="message" placeholder="Message"></textarea><br><br>
+            <button type="submit">Send</button>
         </form>
 
         <br>
-
-        <button onclick="goHome()" 
-        style="padding:15px; margin:10px; background:#3b82f6; color:white; border:none; border-radius:10px;">
-            Back Home
-        </button>
+        <button onclick="goHome()">Back</button>
     </div>
 
     <script>
-        function goToAbout() {
-            document.getElementById("home").style.display = "none";
-            document.getElementById("about").style.display = "block";
-            document.getElementById("contact").style.display = "none";
+        // CHECK IF DATA EXISTS
+        window.onload = function() {
+            let name = localStorage.getItem("churchName");
+            let logo = localStorage.getItem("churchLogo");
+
+            if (name && logo) {
+                document.getElementById("setup").style.display = "none";
+                document.getElementById("app").style.display = "block";
+
+                document.getElementById("displayName").innerText = name;
+                document.getElementById("displayLogo").src = logo;
+            }
         }
 
-        function goToContact() {
-            document.getElementById("home").style.display = "none";
-            document.getElementById("about").style.display = "none";
+        function saveSetup() {
+            let name = document.getElementById("churchName").value;
+            let file = document.getElementById("logoInput").files[0];
+
+            let reader = new FileReader();
+            reader.onload = function() {
+                localStorage.setItem("churchName", name);
+                localStorage.setItem("churchLogo", reader.result);
+
+                location.reload();
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function showContact() {
+            document.getElementById("app").style.display = "none";
             document.getElementById("contact").style.display = "block";
         }
 
         function goHome() {
-            document.getElementById("home").style.display = "block";
-            document.getElementById("about").style.display = "none";
+            document.getElementById("app").style.display = "block";
             document.getElementById("contact").style.display = "none";
+        }
+
+        function resetApp() {
+            localStorage.clear();
+            location.reload();
         }
     </script>
 
