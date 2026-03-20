@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Savvylife</title>
+</head>
+
+<body style="font-family: Calibri; text-align:center; background:#0f172a; color:Blue;">
+
+    <!-- HOME SCREEN -->
+    <div id="home">
+        <h1>Welcome to Savvylife 🚀</h1>
+        <p>This is Timothy Idowu's app</p>
+
+        <button onclick="goToAbout()" 
+        style="padding:15px; background:#22c55e; color:white; border:none; border-radius:10px;">
+            Go to About Page
+        </button>
+    </div>
+
+    <!-- ABOUT SCREEN -->
+    <div id="about" style="display:none;">
+        <h1>Timothy Idowu 😎</h1>
+        <p>This app was built Timothy!</p>
+
+        <button onclick="goHome()" 
+        style="padding:15px; background:#3b82f6; color:white; border:none; border-radius:10px;">
+            Back Home
+        </button>
+    </div>
+
+    <script>
+        function goToAbout() {
+            document.getElementById("home").style.display = "none";
+            document.getElementById("about").style.display = "block";
+        }
+
+        function goHome() {
+            document.getElementById("home").style.display = "block";
+            document.getElementById("about").style.display = "none";
+        }
+    </script>
+
+</body>
+</html>
